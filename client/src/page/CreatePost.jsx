@@ -5,6 +5,7 @@ import { preview } from '../assets';
 import { getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
 
+
 const CreatePost = () => {
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('https://dalle-arbb.onrender.com/api/v1/dalle', {
+        const response = await fetch('http://localhost:8080/api/v1/dalle', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -37,16 +38,16 @@ const CreatePost = () => {
             prompt: form.prompt,
           }),
         });
-
+  
         const data = await response.json();
-        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+        setForm({ ...form, photo: data.photo });
       } catch (err) {
         alert(err);
       } finally {
         setGeneratingImg(false);
       }
     } else {
-      alert('Please provide proper prompt');
+      alert('Please provide a proper prompt');
     }
   };
 
@@ -56,7 +57,7 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch('https://dalle-arbb.onrender.com/api/v1/post', {
+        const response = await fetch('http://localhost:8080/api/v1/post', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ const CreatePost = () => {
     <section className="max-w-7xl mx-auto">
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
-        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Generate an imaginative image through DALL-E AI and share it with the community</p>
+        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Generate an imaginative image through Remixo AI and share it with the community</p>
       </div>
 
       <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
